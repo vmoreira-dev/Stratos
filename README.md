@@ -19,10 +19,10 @@ It provides real-time weather conditions, multi-day forecasts, and location-base
 
 ## Stack
 
-- Next.js (App Router)  
+- Next.js 
 - TypeScript  
 - Tailwind CSS  
-- Node.js / Express (API)  
+- Node.js / Express 
 - OpenWeather API  
 
 ---
