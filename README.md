@@ -1,28 +1,36 @@
 # Stratos
 
-Real-time weather application with live forecasts and location tracking.
+Real-time weather dashboard with live forecasts, geolocation, and responsive UI.
+
+---
 
 ## Overview
 
-Stratos delivers accurate, up-to-date weather data using modern APIs and responsive layouts.  
-It focuses on clarity, minimalism, and performance — providing users with real-time conditions and multi-day forecasts.
+Stratos is a modern weather app built with Next.js, TypeScript, and Tailwind CSS.  
+It provides real-time weather conditions, multi-day forecasts, and location-based data using the OpenWeather API.
+
+---
 
 ## Live Demo
 
 [stratos.vmoreira.dev](https://stratos.vmoreira.dev)
 
+---
+
 ## Stack
 
-- Next.js  
+- Next.js (App Router)  
 - TypeScript  
 - Tailwind CSS  
+- Node.js / Express (API)  
 - OpenWeather API  
-- Node.js / Express  
+
+---
 
 ## Features
 
-- Real-time weather data updates  
-- Current and multi-day forecast display  
-- Location-based weather tracking  
-- Responsive design optimized for all devices  
-- Clean dark UI with smooth transitions
+- Real-time weather condition updates  
+- Current and 5-day forecast display  
+- Geolocation-based weather tracking  
+- Responsive layout for all screen sizes  
+- Clean dark-themed UI with smooth transitions
