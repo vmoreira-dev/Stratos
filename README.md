@@ -1,5 +1,12 @@
 # Stratos
 
+<p align="center">
+  <img height="450" width="750" alt="Stratos
+ Preview" src="[https://github.com/user-attachments/assets/9b6ea655-a6e8-4921-9e72-69d615483eb0](https://github.com/user-attachments/assets/7d7dfbe4-7d6d-4f76-81af-82ce0da1bee1)" />
+</p>
+
+
+
 Real-time weather dashboard with live forecasts, geolocation, and responsive UI.
 
 ---
