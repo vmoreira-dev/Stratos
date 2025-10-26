@@ -3,6 +3,7 @@
 <p align="center">
   <img height="450" width="750" alt="Stratos
  Preview" src=https://github.com/user-attachments/assets/bda1490c-7dca-4e0f-8e36-8f25cd350d94" />
+<img width="1536" height="1024" alt="05cc4cd5-6af6-4fbd-82e3-6aa914d6af80" src="https://github.com/user-attachments/assets/73737f74-8be3-4c06-aeeb-250672cc1fdc" />
 
 </p>
 
