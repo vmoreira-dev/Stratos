@@ -2,7 +2,7 @@
 
 <p align="center">
 
-<img width="1536" height="1024" alt="Stratos Preview" src="https://github.com/user-attachments/assets/73737f74-8be3-4c06-aeeb-250672cc1fdc" />
+<img width="1500" height="1024" alt="Stratos Preview" src="https://github.com/user-attachments/assets/73737f74-8be3-4c06-aeeb-250672cc1fdc" />
 
 </p>
 
