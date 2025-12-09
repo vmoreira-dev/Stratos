@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Stratos
 
-## Getting Started
+<p align="center">
 
-First, run the development server:
+<img width="1500" height="1024" alt="Stratos Preview" src="https://github.com/user-attachments/assets/73737f74-8be3-4c06-aeeb-250672cc1fdc" />
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+</p>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Real-time weather dashboard with live forecasts, geolocation, and responsive UI.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Overview
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Stratos is a modern weather app built with Next.js, TypeScript, and Tailwind CSS.  
+It provides real-time weather conditions, multi-day forecasts, and location-based data using the OpenWeather API.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Live Demo
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+[stratos.vmoreira.dev](https://stratos.vmoreira.dev)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Stack
+
+- Next.js 
+- TypeScript  
+- Tailwind CSS  
+- Node.js / Express 
+- OpenWeather API  
+
+---
+
+## Features
+
+- Real-time weather condition updates  
+- Current and 5-day forecast display  
+- Geolocation-based weather tracking  
+- Responsive layout for all screen sizes  
+- Clean dark-themed UI with smooth transitions
