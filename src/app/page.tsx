@@ -14,9 +14,14 @@ import MetricsBar from "./components/weather/MetricsBar";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center text-4xl">
-      TAILWIND IS 100% ALIVE
-    </div>
+    <main className="w-full flex items-center justify-center px-6">
+      <GlassShell>
+        <Header />
+        <CurrentTemp />
+        <TempGraph />
+        <ForecastRow />
+        <MetricsBar />
+      </GlassShell>
+    </main>
   );
 }
-
