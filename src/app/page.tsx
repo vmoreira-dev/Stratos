@@ -1,12 +1,20 @@
+import GlassShell from "./components/shell/GlassShell";
+import Header from "./components/header/Header";
+import CurrentTemp from "./components/weather/CurrentTemp";
+import TempGraph from "./components/weather/TempGraph";
+import ForecastRow from "./components/weather/ForecastRow";
+import MetricsBar from "./components/weather/MetricsBar";
+
 export default function Home() {
   return (
-    <div className="w-full max-w-5xl rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl p-10 text-white">
-      <h1 className="text-5xl font-semibold text-center">Stratos</h1>
-
-      <div className="mt-10 text-center">
-        <div className="text-8xl font-light">72°</div>
-        <div className="opacity-70 mt-2">New York</div>
-      </div>
-    </div>
+    <main className="min-h-screen w-full flex items-center justify-center px-6">
+      <GlassShell>
+        <Header />
+        <CurrentTemp />
+        <TempGraph />
+        <ForecastRow />
+        <MetricsBar />
+      </GlassShell>
+    </main>
   );
 }

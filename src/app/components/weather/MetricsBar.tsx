@@ -1,20 +1,30 @@
+const METRICS = [
+  { label: "Wind", value: "8 mph" },
+  { label: "Humidity", value: "64%" },
+  { label: "Precip", value: "0%" },
+];
+
 export default function MetricsBar() {
   return (
-    <div className="grid grid-cols-3 gap-4">
-      <div className="rounded-xl bg-white/10 p-4 text-center">
-        <div className="text-sm opacity-70">Wind</div>
-        <div className="text-lg">8 mph</div>
-      </div>
-
-      <div className="rounded-xl bg-white/10 p-4 text-center">
-        <div className="text-sm opacity-70">Humidity</div>
-        <div className="text-lg">64%</div>
-      </div>
-
-      <div className="rounded-xl bg-white/10 p-4 text-center">
-        <div className="text-sm opacity-70">Precip</div>
-        <div className="text-lg">0%</div>
-      </div>
-    </div>
+    <section className="w-full grid grid-cols-3 gap-6 pt-2">
+      {METRICS.map((m) => (
+        <div
+          key={m.label}
+          className="
+            rounded-2xl
+            bg-white/8
+            border border-white/15
+            backdrop-blur-md
+            py-4
+            flex flex-col items-center justify-center
+          "
+        >
+          <span className="text-xs opacity-55 uppercase tracking-wide">
+            {m.label}
+          </span>
+          <span className="mt-1 text-lg font-medium">{m.value}</span>
+        </div>
+      ))}
+    </section>
   );
 }

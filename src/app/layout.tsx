@@ -2,7 +2,7 @@ import "./globals.css";
 
 export const metadata = {
   title: "Stratos",
-  description: "Animated glass weather interface",
+  description: "Glass weather interface",
 };
 
 export default function RootLayout({
@@ -12,14 +12,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen w-full overflow-hidden">
-        {/* Background */}
+      <body className="min-h-screen w-full overflow-hidden text-white">
+        {/* Sky background */}
         <div
           className="fixed inset-0 -z-10 bg-cover bg-center"
           style={{ backgroundImage: "url('/backgrounds/sky.webp')" }}
         />
 
-        {/* App Center */}
+        {/* Centered app shell */}
         <div className="min-h-screen w-full flex items-center justify-center px-6">
           {children}
         </div>

@@ -1,15 +1,30 @@
+const MOCK_FORECAST = [
+  { day: "Sat", temp: "70°" },
+  { day: "Sun", temp: "68°" },
+  { day: "Mon", temp: "72°" },
+  { day: "Tue", temp: "75°" },
+  { day: "Wed", temp: "71°" },
+];
+
 export default function ForecastRow() {
   return (
-    <div className="grid grid-cols-5 gap-4 mb-8">
-      {["Sat", "Sun", "Mon", "Tue", "Wed"].map((day) => (
+    <section className="w-full grid grid-cols-5 gap-4">
+      {MOCK_FORECAST.map((d) => (
         <div
-          key={day}
-          className="rounded-xl bg-white/10 p-4 text-center"
+          key={d.day}
+          className="
+            rounded-2xl
+            bg-white/10
+            border border-white/20
+            backdrop-blur-md
+            py-4
+            flex flex-col items-center justify-center
+          "
         >
-          <div className="text-sm opacity-70">{day}</div>
-          <div className="text-lg">70°</div>
+          <span className="text-xs opacity-60">{d.day}</span>
+          <span className="mt-1 text-lg font-medium">{d.temp}</span>
         </div>
       ))}
-    </div>
+    </section>
   );
 }
