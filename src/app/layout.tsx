@@ -13,7 +13,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen w-full overflow-hidden">
-        {/* Background */}
+        {/* Sky background */}
         <div
           className="fixed inset-0 -z-10 bg-cover bg-center"
           style={{
@@ -21,8 +21,8 @@ export default function RootLayout({
           }}
         />
 
-        {/* Global glass atmosphere */}
-        <div className="min-h-screen w-full flex items-center justify-center">
+        {/* App center */}
+        <div className="min-h-screen w-full flex items-center justify-center px-6">
           {children}
         </div>
       </body>
