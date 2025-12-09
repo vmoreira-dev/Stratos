@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
 body {
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont;
+  background: transparent;
 }

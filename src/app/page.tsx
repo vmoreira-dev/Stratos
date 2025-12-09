@@ -1,8 +1,20 @@
-export default function Page() {
+import GlassShell from "@/components/shell/GlassShell";
+import Header from "@/components/header/Header";
+import CurrentTemp from "@/components/weather/CurrentTemp";
+import TempGraph from "@/components/weather/TempGraph";
+import ForecastRow from "@/components/weather/ForecastRow";
+import MetricsBar from "@/components/weather/MetricsBar";
+
+export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-sky-50 to-sky-100 text-sky-900">
-      <h1 className="text-4xl font-semibold tracking-tight">Stratos</h1>
-      <p className="mt-2 text-sm text-sky-600">Weather app with live forecasts</p>
+    <main className="w-full flex items-center justify-center px-6">
+      <GlassShell>
+        <Header />
+        <CurrentTemp />
+        <TempGraph />
+        <ForecastRow />
+        <MetricsBar />
+      </GlassShell>
     </main>
   );
 }
