@@ -12,10 +12,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen w-full overflow-hidden">
+      <body className="min-h-screen w-full overflow-hidden text-white">
         {/* Sky background */}
         <div
-          className="fixed inset-0 -z-10 bg-cover bg-center"
+          className="fixed inset-0 -z-10 bg-cover bg-center brightness-75 saturate-125"
           style={{
             backgroundImage: "url('/backgrounds/sky.webp')",
           }}
