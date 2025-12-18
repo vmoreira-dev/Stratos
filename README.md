@@ -1,8 +1,8 @@
 # Stratos
 
-![Stratos — Weather Interface](./public/backgrounds/sky.webp)
+![Stratos — Weather Interface](./public/backgrounds/sky`.webp)
 
-https://stratos.vmoreira.dev
+View: https://stratos.vmoreira.dev
 
 ---
 
