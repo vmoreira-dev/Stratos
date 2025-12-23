@@ -1,15 +1,16 @@
 export default function CurrentTemp() {
   return (
-    <section className="flex flex-col items-center justify-center py-4">
-      <div
-          style={{
-            animation: "temp-float 40s ease-in-out infinite",
-          }}
-        >
-          <h1 className="text-7xl font-light">72°</h1>
+    <section className="flex items-end justify-between py-4">
+      <div className="space-y-1">
+        
+        <div className="text-sm text-white/70">
+          New York
         </div>
+      </div>
 
-      <div className="mt-3 text-sm tracking-wide opacity-70">New York</div>
+      <div className="text-6xl font-medium tracking-tight">
+        72°
+      </div>
     </section>
   );
 }

@@ -127,3 +127,19 @@ body {
     transform: scale(1.1);
   }
 }
+
+
+@keyframes atmosphere {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+.animate-atmosphere {
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.6),
+    rgba(255,255,255,0)
+  );
+  animation: atmosphere 45s ease-in-out infinite;
+}

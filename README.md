@@ -23,7 +23,7 @@ It presents current conditions and short-range forecasts through a glass-based U
 
 ---
 
-## Execution
+## Stack
 
 - Next.js  
 - TypeScript  

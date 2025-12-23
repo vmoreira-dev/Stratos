@@ -10,36 +10,44 @@ export default function GlassShell({
       className="
         relative
         w-full max-w-5xl
-        rounded-3xl
-        bg-white/15
-        backdrop-blur-2xl
-        border border-white/25
-        shadow-[0_24px_80px_rgba(0,0,0,0.35)]
-        ring-1 ring-white/20
-        p-10
+        rounded-2xl
+        bg-neutral-900
+        border border-white/10
+        shadow-[0_20px_60px_rgba(0,0,0,0.5)]
+        p-8
         space-y-10
         overflow-hidden
-        ripple-surface
       "
-      onMouseEnter={(e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-
-        e.currentTarget.style.setProperty(
-          "--ripple-x",
-          `${e.clientX - rect.left}px`
-        );
-        e.currentTarget.style.setProperty(
-          "--ripple-y",
-          `${e.clientY - rect.top}px`
-        );
-
-        // retrigger animation cleanly
-        e.currentTarget.classList.remove("ripple-surface");
-        void e.currentTarget.offsetWidth;
-        e.currentTarget.classList.add("ripple-surface");
-      }}
     >
-      {children}
+      {/* ambient atmosphere layer */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0))",
+          animation: "atmosphere 48s ease-in-out infinite",
+        }}
+      />
+
+      {/* content */}
+      <div className="relative z-10">
+        {children}
+      </div>
+
+      {/* scoped animation */}
+      <style jsx>{`
+        @keyframes atmosphere {
+          0% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+          100% {
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 }
