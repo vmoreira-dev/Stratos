@@ -1,16 +1,22 @@
-export default function Header() {
-  return (
-    <header className="flex items-center justify-between">
-      <div>
-        <h1 className="text-sm tracking-[0.35em] uppercase opacity-70">
-          Stratos
-        </h1>
-      </div>
+"use client";
 
-      <div className="flex items-center gap-3 text-xs opacity-70">
-       
-        
-      </div>
-    </header>
+export default function GlassShell({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className="
+        relative
+        w-full max-w-5xl h-[420px]
+        rounded-3xl
+        bg-neutral-900/95
+        shadow-[0_60px_140px_rgba(0,0,0,0.7)]
+        overflow-hidden
+      "
+    >
+      {children}
+    </div>
   );
 }
