@@ -10,40 +10,42 @@ export default function WeatherCard() {
     <section
       className="
         relative
+        w-full
         max-w-[1100px]
         min-h-[460px]
         rounded-3xl
         overflow-hidden
-        bg-white/[0.04]
         backdrop-blur-2xl
-        shadow-[0_40px_120px_rgba(0,0,0,0.65)]
-        ring-1 ring-white/10
+        ring-1 ring-white/15
+        shadow-[0_40px_120px_rgba(0,0,0,0.7)]
       "
     >
-      {/* Top highlight */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+      {/* ===== ATMOSPHERIC LIGHT (BEHIND CONTENT) ===== */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        {/* top soft highlight */}
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white/10 to-transparent" />
 
-      {/* Ambient glow */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute bottom-0 left-1/4 h-64 w-96 bg-amber-400/20 blur-[120px]" />
-        <div className="absolute top-0 right-0 h-48 w-64 bg-sky-400/10 blur-[100px]" />
+        {/* cool → warm lateral wash */}
+        <div className="absolute inset-0 bg-gradient-to-r from-sky-400/10 via-transparent to-amber-400/15" />
+
+        {/* warm horizon glow */}
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-amber-500/25 to-transparent" />
       </div>
 
-      {/* Content */}
-      <div className="relative px-12 py-10 grid grid-cols-5 gap-10">
-          {/* Left: temp + city */}
-          <div className="col-span-2 flex flex-col justify-between">
-            <CurrentTemp />
-            <MetricsBar />
-          </div>
-
-          {/* Right: graph + forecast */}
-          <div className="col-span-3 flex flex-col justify-between">
-            <TempGraph />
-            <ForecastRow />
-          </div>
+      {/* ===== CONTENT (ALWAYS ON TOP) ===== */}
+      <div className="relative z-10 h-full px-12 py-10 grid grid-cols-5 gap-10">
+        {/* Left: temp + city + metrics */}
+        <div className="col-span-2 flex flex-col justify-between">
+          <CurrentTemp />
+          <MetricsBar />
         </div>
 
+        {/* Right: graph + forecast */}
+        <div className="col-span-3 flex flex-col justify-between">
+          <TempGraph />
+          <ForecastRow />
+        </div>
+      </div>
     </section>
   );
 }
