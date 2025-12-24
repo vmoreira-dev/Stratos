@@ -30,9 +30,10 @@ export default function WeatherCard() {
       
 
       {/* city — hard pinned */}
-      <div className="absolute left-14 top-10 z-20 text-lg font-medium text-white/80 tracking-wide">
+     <div className="absolute left-14 top-10 z-20 font-sans text-lg font-light tracking-[0.22em] text-white/65 uppercase">
         New York
       </div>
+
 
       {/* content */}
       <div className="relative z-10 h-full px-14 py-12 flex flex-col">

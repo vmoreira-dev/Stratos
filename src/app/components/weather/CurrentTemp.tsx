@@ -2,7 +2,7 @@
 
 export default function CurrentTemp() {
   return (
-    <div className="text-6xl font-medium tracking-tight text-right leading-none">
+    <div className="font-sans text-6xl font-light tracking-[-0.02em] leading-none text-white/90">
       72°
     </div>
   );
