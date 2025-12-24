@@ -2,63 +2,77 @@
 
 export default function TempGraph() {
   return (
-    <div className="relative h-40 w-full">
-      {/* === GLOW AURA === */}
-      <div className="pointer-events-none absolute inset-0">
-        {/* warm glow following curve */}
-        <div className="absolute bottom-8 left-1/4 h-24 w-72 bg-amber-400/30 blur-[80px]" />
-        <div className="absolute bottom-10 right-1/4 h-20 w-56 bg-amber-300/25 blur-[70px]" />
-      </div>
+    <div className="relative w-full h-40">
+      {/* horizon glow */}
+      <div className="pointer-events-none absolute inset-x-20 bottom-8 h-[1.5px] bg-gradient-to-r from-transparent via-amber-300/70 to-transparent" />
 
-      {/* === SVG CURVE === */}
+      {/* atmospheric bleed */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-amber-400/30 via-amber-300/12 to-transparent blur-3xl" />
+
       <svg
         viewBox="0 0 1000 200"
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-x-0 bottom-6 h-[140px] w-full"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* soft under-glow */}
+        <defs>
+          <linearGradient id="gold-core" x1="0" y1="0" x2="1000" y2="0">
+            <stop offset="0%" stopColor="#fef3c7" />
+            <stop offset="45%" stopColor="#fde68a" />
+            <stop offset="75%" stopColor="#fbbf24" />
+            <stop offset="100%" stopColor="#f59e0b" />
+          </linearGradient>
+
+          <linearGradient id="gold-glow" x1="0" y1="0" x2="1000" y2="0">
+            <stop offset="0%" stopColor="#fde68a" />
+            <stop offset="100%" stopColor="#f59e0b" />
+          </linearGradient>
+
+          <filter id="blur-heavy" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="20" />
+          </filter>
+
+          <filter id="blur-soft" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="9" />
+          </filter>
+        </defs>
+
         <path
-          d="M0 130 C 180 150, 320 110, 500 120 C 680 130, 820 90, 1000 80"
-          stroke="url(#glow)"
-          strokeWidth="8"
+          d="M0 120 C 200 140, 360 110, 520 120 C 700 130, 840 95, 1000 90"
+          stroke="url(#gold-glow)"
+          strokeWidth="30"
           strokeLinecap="round"
-          opacity="0.35"
+          opacity="0.3"
+          filter="url(#blur-heavy)"
         />
 
-        {/* main curve */}
         <path
-          d="M0 130 C 180 150, 320 110, 500 120 C 680 130, 820 90, 1000 80"
-          stroke="url(#line)"
+          d="M0 120 C 200 140, 360 110, 520 120 C 700 130, 840 95, 1000 90"
+          stroke="url(#gold-glow)"
+          strokeWidth="14"
+          strokeLinecap="round"
+          opacity="0.55"
+          filter="url(#blur-soft)"
+        />
+
+        <path
+          d="M0 120 C 200 140, 360 110, 520 120 C 700 130, 840 95, 1000 90"
+          stroke="url(#gold-core)"
           strokeWidth="3"
           strokeLinecap="round"
         />
 
-        {/* vertical tick lights */}
-        {[150, 320, 500, 680, 820].map((x) => (
+        {[180, 360, 520, 700, 860].map((x) => (
           <line
             key={x}
             x1={x}
             y1={200}
             x2={x}
-            y2={120}
-            stroke="rgba(255,255,255,0.15)"
+            y2={138}
+            stroke="rgba(255,255,255,0.16)"
             strokeWidth="1"
           />
         ))}
-
-        <defs>
-          <linearGradient id="line" x1="0" y1="0" x2="1000" y2="0">
-            <stop offset="0%" stopColor="#7dd3fc" />
-            <stop offset="50%" stopColor="#fde68a" />
-            <stop offset="100%" stopColor="#fbbf24" />
-          </linearGradient>
-
-          <linearGradient id="glow" x1="0" y1="0" x2="1000" y2="0">
-            <stop offset="0%" stopColor="#7dd3fc" />
-            <stop offset="100%" stopColor="#fbbf24" />
-          </linearGradient>
-        </defs>
       </svg>
     </div>
   );

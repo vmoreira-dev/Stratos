@@ -1,43 +1,85 @@
 @import "tailwindcss";
 
-/* --------------------
-   Base theme
--------------------- */
+/* =========================================================
+   BASE THEME
+   ========================================================= */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #ededed;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
 }
 
-/* --------------------
-   STRATOS: implicit motion
-   (ONLY visible, reliable animations)
--------------------- */
+/* =========================================================
+   GLOBAL FILM GRAIN / PARTICULATE NOISE
+   ---------------------------------------------------------
+   This is critical for render-like material depth.
+   If you NOTICE it, it's too strong.
+   ========================================================= */
 
-/* Sky drift — APPLY TO <img>, NOT background-image */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  background-image:
+    repeating-radial-gradient(
+      circle at 0 0,
+      rgba(255,255,255,0.12),
+      rgba(255,255,255,0.12) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+
+  background-size: 120px 120px;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+}
+
+/* =========================================================
+   GLASS SURFACE NOISE (APPLY TO CARDS)
+   ---------------------------------------------------------
+   Usage: add `glass-noise` to the container.
+   ========================================================= */
+
+.glass-noise {
+  position: relative;
+}
+
+.glass-noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  border-radius: inherit;
+}
+
+/* =========================================================
+   STRATOS: IMPLICIT MOTION
+   (SLOW, ENVIRONMENTAL — NOT UI JITTER)
+   ========================================================= */
+
+/* Sky drift — APPLY TO <img> ONLY */
 @keyframes sky-drift {
-  0% {
-    transform: scale(1.08) translateY(0px);
-  }
-  50% {
-    transform: scale(1.08) translateY(-40px);
-  }
-  100% {
-    transform: scale(1.08) translateY(0px);
-  }
+  0%   { transform: scale(1.08) translateY(0px); }
+  50%  { transform: scale(1.08) translateY(-40px); }
+  100% { transform: scale(1.08) translateY(0px); }
 }
 
 .animate-sky-drift {
@@ -45,17 +87,10 @@ body {
   will-change: transform;
 }
 
-/* Hero temperature micro-float (optional) */
+/* Temperature micro-float (hero only) */
 @keyframes temp-float {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-2px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
 
 .animate-temp-float {
@@ -63,39 +98,24 @@ body {
   will-change: transform;
 }
 
-/* --------------------
-   DEBUG (keep for sanity checks)
--------------------- */
-
-@keyframes debug-move {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(200px);
-  }
-  100% {
-    transform: translateX(0);
-  }
+/* Atmospheric vertical drift */
+@keyframes atmosphere {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
-.debug-move {
-  animation: debug-move 2s linear infinite;
+.animate-atmosphere {
+  animation: atmosphere 45s ease-in-out infinite;
 }
 
+/* =========================================================
+   RIPPLE INTERACTION (OPTIONAL, CONTROLLED)
+   ========================================================= */
 
-@keyframes sky-drift {
-  0% { transform: scale(1.08) translateY(0px); }
-  50% { transform: scale(1.08) translateY(-40px); }
-  100% { transform: scale(1.08) translateY(0px); }
+.ripple-surface {
+  position: relative;
+  overflow: hidden;
 }
-
-.animate-sky-drift {
-  animation: sky-drift 120s ease-in-out infinite;
-}
-
-
-/* ---- Stratos hover ripple (subtle, single-shot) ---- */
 
 .ripple-surface::after {
   content: "";
@@ -105,9 +125,9 @@ body {
   opacity: 0;
 
   background: radial-gradient(
-    120px circle at var(--ripple-x) var(--ripple-y),
-    rgba(255, 255, 255, 0.14),
-    rgba(255, 255, 255, 0.08) 40%,
+    140px circle at var(--ripple-x) var(--ripple-y),
+    rgba(255,255,255,0.14),
+    rgba(255,255,255,0.08) 40%,
     transparent 70%
   );
 
@@ -115,68 +135,20 @@ body {
 }
 
 @keyframes ripple-fade {
-  0% {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  20% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.1);
-  }
+  0%   { opacity: 0; transform: scale(0.95); }
+  20%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.1); }
 }
 
+/* =========================================================
+   DEBUG (SAFE, NON-CONFLICTING)
+   ========================================================= */
 
-@keyframes atmosphere {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-  100% { transform: translateY(0); }
+@keyframes debug-move {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(200px); }
 }
 
-.animate-atmosphere {
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.6),
-    rgba(255,255,255,0)
-  );
-  animation: atmosphere 45s ease-in-out infinite;
-}
-
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-float {
-  animation: float 20s ease-in-out infinite;
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.8s ease-out both;
-}
-
-@keyframes tempFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 0.4; }
-}
-
-.animate-tempFloat {
-  animation: tempFloat 18s ease-in-out infinite;
-}
-
-.animate-fadeIn {
-  animation: fadeIn 1.2s ease-out both;
+.debug-move {
+  animation: debug-move 2s linear infinite;
 }
