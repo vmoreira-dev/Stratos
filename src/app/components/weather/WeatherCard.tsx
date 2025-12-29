@@ -106,7 +106,7 @@ export default function WeatherCard() {
         <div className="flex flex-1 justify-center mt-6">
           <div className="w-[78%] flex flex-col gap-8">
             <TempGraph key={city} data={data} loading={loading} />
-            <ForecastRow data={data} loading={loading} />
+            <ForecastRow data={data} />
           </div>
         </div>
 
