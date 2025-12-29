@@ -1,6 +1,6 @@
 # Stratos
 
-![Stratos — Weather Interface](./public/assets/stratos.webp)
+![Stratos — Weather Interface](./public/backgrounds/stratos-horizon.webp)
 
 ---
 

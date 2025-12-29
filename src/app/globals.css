@@ -9,19 +9,21 @@
   --foreground: #ededed;
 }
 
+/* Body + html must NOT paint black
+   or your hero background gets nuked */
 html,
 body {
-  background: var(--background);
+  background: transparent;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   overflow-x: hidden;
+  min-height: 100%;
 }
 
 /* =========================================================
    GLOBAL FILM GRAIN / PARTICULATE NOISE
    ---------------------------------------------------------
-   This is critical for render-like material depth.
-   If you NOTICE it, it's too strong.
+   This stays — it just gets pushed BELOW UI
    ========================================================= */
 
 body::before {
@@ -29,7 +31,9 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+
+  /* PUT THIS BELOW EVERYTHING BUT ABOVE BG IMAGE */
+  z-index: -1;
 
   background-image:
     repeating-radial-gradient(
@@ -47,8 +51,6 @@ body::before {
 
 /* =========================================================
    GLASS SURFACE NOISE (APPLY TO CARDS)
-   ---------------------------------------------------------
-   Usage: add `glass-noise` to the container.
    ========================================================= */
 
 .glass-noise {
@@ -72,10 +74,8 @@ body::before {
 
 /* =========================================================
    STRATOS: IMPLICIT MOTION
-   (SLOW, ENVIRONMENTAL — NOT UI JITTER)
    ========================================================= */
 
-/* Sky drift — APPLY TO <img> ONLY */
 @keyframes sky-drift {
   0%   { transform: scale(1.08) translateY(0px); }
   50%  { transform: scale(1.08) translateY(-40px); }
@@ -87,7 +87,6 @@ body::before {
   will-change: transform;
 }
 
-/* Temperature micro-float (hero only) */
 @keyframes temp-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-4px); }
@@ -98,7 +97,6 @@ body::before {
   will-change: transform;
 }
 
-/* Atmospheric vertical drift */
 @keyframes atmosphere {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
@@ -109,7 +107,7 @@ body::before {
 }
 
 /* =========================================================
-   RIPPLE INTERACTION (OPTIONAL, CONTROLLED)
+   RIPPLE INTERACTION (OPTIONAL)
    ========================================================= */
 
 .ripple-surface {
@@ -141,7 +139,7 @@ body::before {
 }
 
 /* =========================================================
-   DEBUG (SAFE, NON-CONFLICTING)
+   DEBUG
    ========================================================= */
 
 @keyframes debug-move {

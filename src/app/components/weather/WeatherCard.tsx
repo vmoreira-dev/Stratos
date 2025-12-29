@@ -9,15 +9,25 @@ import MetricsBar from "./MetricsBar";
 const cities = {
   "New York": { lat: 40.7128, lon: -74.006 },
   "Los Angeles": { lat: 34.0522, lon: -118.2437 },
-  Chicago: { lat: 41.8781, lon: -87.6298 },
+  "Boston": { lat: 42.3601, lon: -71.0589 },
 };
 
+
 export default function WeatherCard() {
+  const [mounted, setMounted] = useState(false);
   const [city, setCity] = useState("New York");
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
+  // ensure server + first client render match
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // fetch after mount + city change
+  useEffect(() => {
+    if (!mounted) return;
+
     const c = cities[city];
     setLoading(true);
 
@@ -25,14 +35,26 @@ export default function WeatherCard() {
       .then((r) => r.json())
       .then((d) => setData(d))
       .finally(() => setLoading(false));
-  }, [city]);
+  }, [city, mounted]);
+
+  // 👇 THIS prevents hydration mismatch
+  if (!mounted) return null;
 
   return (
-    <section className="
-      relative w-full max-w-[1100px] min-h-[460px]
-      rounded-3xl overflow-hidden backdrop-blur-2xl
-      ring-1 ring-white/15 shadow-[0_40px_120px_rgba(0,0,0,0.75)]
-    ">
+   <section
+        className="
+          group
+          relative
+          w-full
+          max-w-[1100px]
+          min-h-[460px]
+          rounded-3xl
+      -   overflow-hidden
+          backdrop-blur-2xl
+          ring-1 ring-white/15
+          shadow-[0_40px_120px_rgba(0,0,0,0.75)]
+        "
+      >
 
       {/* glass washes */}
       <div className="pointer-events-none absolute inset-0 z-0">
@@ -41,7 +63,7 @@ export default function WeatherCard() {
         <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-amber-500/30 to-transparent" />
       </div>
 
-      {/* city + dropdown */}
+      {/* watermark + dropdown */}
       <div className="absolute left-14 top-10 z-20 flex items-center gap-4">
         <span className="font-sans text-lg tracking-[0.22em] text-white/65 uppercase">
           {city}
@@ -50,7 +72,22 @@ export default function WeatherCard() {
         <select
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          className="bg-black/30 text-sm px-3 py-1 rounded-lg text-white/80 ring-1 ring-white/20"
+          className="
+            bg-black/30
+            text-sm
+            px-4
+            py-1.5
+            rounded-xl
+            text-white/80
+            ring-1 ring-white/20
+            backdrop-blur-md
+            transition
+            opacity-0
+            pointer-events-none
+            group-hover:opacity-100
+            group-hover:pointer-events-auto
+            group-hover:ring-white/40
+          "
         >
           {Object.keys(cities).map((c) => (
             <option key={c}>{c}</option>
@@ -66,7 +103,7 @@ export default function WeatherCard() {
 
         <div className="flex flex-1 justify-center mt-6">
           <div className="w-[78%] flex flex-col gap-8">
-            <TempGraph data={data} loading={loading} />
+            <TempGraph key={city} data={data} loading={loading} />
             <ForecastRow data={data} loading={loading} />
           </div>
         </div>

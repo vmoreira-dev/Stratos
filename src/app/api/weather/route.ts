@@ -17,12 +17,10 @@ export async function GET(req: Request) {
   }
 
   try {
-    // current weather
     const currentReq = fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${key}`
     );
 
-    // 5-day forecast
     const forecastReq = fetch(
       `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${key}`
     );
@@ -35,24 +33,57 @@ export async function GET(req: Request) {
     const current = await currentRes.json();
     const forecast = await forecastRes.json();
 
+    const tzOffsetMs = (forecast.city?.timezone ?? 0) * 1000;
+
+    // today's local date
+    const todayKey = new Date(Date.now() + tzOffsetMs)
+      .toISOString()
+      .slice(0, 10);
+
+    // bucket entries by date, choose the one closest to 12:00 local
+    const buckets: Record<string, any[]> = {};
+
+    for (const item of forecast.list) {
+      const local = new Date(item.dt * 1000 + tzOffsetMs);
+      const key = local.toISOString().slice(0, 10);
+
+      if (!buckets[key]) buckets[key] = [];
+      buckets[key].push(item);
+    }
+
+    const days = Object.keys(buckets)
+      .filter((k) => k >= todayKey) // only today+
+      .slice(0, 5) // limit before mapping
+      .map((k) => {
+        const items = buckets[k];
+
+        // 12:00 reference time
+        const noon = new Date(k + "T12:00:00.000Z").getTime();
+
+        // choose the item closest to noon local
+        const best = items.reduce((a, b) =>
+          Math.abs(a.dt * 1000 - noon) < Math.abs(b.dt * 1000 - noon) ? a : b
+        );
+
+        const local = new Date(best.dt * 1000 + tzOffsetMs);
+
+        return {
+          dt: best.dt,
+          day: local.toLocaleDateString("en-US", { weekday: "short" }),
+          temp: Math.round(best.main.temp),
+        };
+      });
+
     return NextResponse.json({
       current: {
         temp: Math.round(current.main.temp),
         humidity: current.main.humidity,
         wind: Math.round(current.wind.speed),
       },
-      days: forecast.list
-        .filter((_: any, i: number) => i % 8 === 0) // one per day
-        .slice(0, 5)
-        .map((f: any) => ({
-          day: new Date(f.dt * 1000).toLocaleDateString("en-US", {
-            weekday: "short",
-          }),
-          temp: Math.round(f.main.temp),
-        })),
+      days,
     });
-  } catch (e) {
-    console.error(e);
+  } catch (err) {
+    console.error(err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

@@ -1,57 +1,64 @@
 "use client";
 
-import { useState, useId } from "react";
+import { useState, useMemo, useId } from "react";
 
-export default function TempGraph({
-  data,
-  loading,
-}: {
+type TempGraphProps = {
   data?: any;
   loading?: boolean;
-}) {
-  // fallback temps while loading
-  let mids = [66, 68, 70, 73, 71];
+};
 
-  if (!loading && data?.days?.length >= 5) {
-    mids = data.days.map((d: any) => d.temp);
-  }
+export default function TempGraph({ data, loading }: TempGraphProps) {
+  // ------- DATA -------
+  const mids = useMemo(() => {
+    if (data?.days?.length) {
+      return data.days.slice(0, 5).map((d: any) => d.temp);
+    }
+    return [];
+  }, [data]);
 
   const [active, setActive] = useState<number | null>(null);
 
-  const width = 1000;
-  const height = 160;
+  // ALWAYS call hooks before any returns (no mismatch BS)
+  const glowId = useId();
 
-  const chartTop = 20;
-  const chartBottom = 120;
+  if (!mids.length) {
+    return <div className="relative w-full h-44 opacity-60" />;
+  }
+
+  // ------- CHART GEOMETRY -------
+  const width = 1000;
+  const height = 180;
+
+  // GIVE THE DOTS ROOM TO BREATHE 🔥
+  const glowSpread = 30;      // matches your blur “radius”
+  const chartTop = 45 + glowSpread * 0.25; // headroom
+  const chartBottom = 135;
   const chartHeight = chartBottom - chartTop;
 
   const min = Math.min(...mids) - 3;
   const max = Math.max(...mids) + 3;
 
-  // keep glow away from walls
-  const padX = 100;
+  const padX = width / 10;
   const col = (width - padX * 2) / (mids.length - 1);
 
   const y = (v: number) =>
-    chartBottom - ((v - min) / (max - min)) * chartHeight;
-
-  const glowId = useId();
+    chartBottom - ((v - min) / (max - min || 1)) * chartHeight;
 
   return (
-    <div className="relative w-full h-44">
+    <div className="relative w-full h-44 pointer-events-auto">
       <svg
         viewBox={`0 0 ${width} ${height}`}
         className="absolute inset-0 w-full h-full"
-        fill="none"
       >
         <defs>
+          {/* MASSIVE BLEED SO GLOW NEVER CLIPS */}
           <filter
             id={glowId}
             filterUnits="userSpaceOnUse"
-            x="-500"
-            y="-500"
-            width="2000"
-            height="2000"
+            x="-800"
+            y="-800"
+            width="3000"
+            height="3000"
           >
             <feGaussianBlur stdDeviation="28" />
           </filter>
@@ -69,6 +76,10 @@ export default function TempGraph({
         {mids.map((t, i) => {
           const x = padX + i * col;
           const mid = y(t);
+          const heat = (t - min) / (max - min || 1);
+
+          const glowOpacity = 0.25 + heat * 0.55;
+          const radius = 22 + heat * 14;
 
           return (
             <g
@@ -77,39 +88,21 @@ export default function TempGraph({
               onMouseLeave={() => setActive(null)}
               style={{ cursor: "pointer" }}
             >
-              {/* guide */}
-              <line
-                x1={x}
-                x2={x}
-                y1={chartTop}
-                y2={chartBottom}
-                stroke="rgba(255,255,255,0.06)"
-              />
-
-              {/* glow */}
+              {/* warm aura */}
               <circle
                 cx={x}
                 cy={mid}
-                r={34}
-                fill="rgba(255,200,110,0.55)"
+                r={radius}
+                fill={`rgba(255,200,110,${glowOpacity})`}
                 filter={`url(#${glowId})`}
-                opacity={active === i ? 0.95 : 0.75}
               />
 
-              {/* dot */}
+              {/* gold core */}
               <circle
                 cx={x}
                 cy={mid}
-                r={active === i ? 11 : 9}
-                fill="rgba(255,205,120,0.55)"
-              />
-
-              {/* core */}
-              <circle
-                cx={x}
-                cy={mid}
-                r={active === i ? 4.5 : 3.6}
-                fill="rgba(255,235,200,0.9)"
+                r={active === i ? 9.5 : 8}
+                fill="rgba(255,210,130,0.95)"
               />
             </g>
           );
