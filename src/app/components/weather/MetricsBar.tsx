@@ -7,26 +7,16 @@ export default function MetricsBar({
   data?: any;
   loading?: boolean;
 }) {
-  if (loading || !data) return null;
-
-  const wind = Math.round(data.current?.wind_speed ?? 0);
-  const humidity = Math.round(data.current?.humidity ?? 0);
-  const precip = Math.round((data.daily?.[0]?.pop ?? 0) * 100);
+  const wind = loading || !data ? "--" : data.current.wind;
+  const humidity = loading || !data ? "--" : data.current.humidity;
+  const precip = "--"; // forecast API doesn't give exact %
 
   return (
     <div
       className="
-        mt-4
-        flex
-        items-center
-        justify-between
-        gap-10
-        px-10
-        py-5
-        rounded-2xl
-        bg-white/[0.04]
-        ring-1 ring-white/10
-        backdrop-blur-md
+        mt-4 flex items-center justify-between gap-10
+        px-10 py-5 rounded-2xl bg-white/[0.04]
+        ring-1 ring-white/10 backdrop-blur-md
       "
     >
       <Metric label="Wind" value={`${wind} mph`} />

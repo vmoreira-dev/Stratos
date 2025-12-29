@@ -9,9 +9,12 @@ export default function TempGraph({
   data?: any;
   loading?: boolean;
 }) {
-  if (loading || !data?.daily?.length) return <div className="w-full h-44" />;
+  // fallback temps while loading
+  let mids = [66, 68, 70, 73, 71];
 
-  const mids = data.daily.slice(0, 5).map((d: any) => Math.round(d.temp.day));
+  if (!loading && data?.days?.length >= 5) {
+    mids = data.days.map((d: any) => d.temp);
+  }
 
   const [active, setActive] = useState<number | null>(null);
 
@@ -25,6 +28,7 @@ export default function TempGraph({
   const min = Math.min(...mids) - 3;
   const max = Math.max(...mids) + 3;
 
+  // keep glow away from walls
   const padX = 100;
   const col = (width - padX * 2) / (mids.length - 1);
 
@@ -35,13 +39,25 @@ export default function TempGraph({
 
   return (
     <div className="relative w-full h-44">
-      <svg viewBox={`0 0 ${width} ${height}`} className="absolute inset-0 w-full h-full" fill="none">
+      <svg
+        viewBox={`0 0 ${width} ${height}`}
+        className="absolute inset-0 w-full h-full"
+        fill="none"
+      >
         <defs>
-          <filter id={glowId} filterUnits="userSpaceOnUse" x="-500" y="-500" width="2000" height="2000">
+          <filter
+            id={glowId}
+            filterUnits="userSpaceOnUse"
+            x="-500"
+            y="-500"
+            width="2000"
+            height="2000"
+          >
             <feGaussianBlur stdDeviation="28" />
           </filter>
         </defs>
 
+        {/* baseline */}
         <line
           x1="0"
           x2={width}
@@ -53,8 +69,6 @@ export default function TempGraph({
         {mids.map((t, i) => {
           const x = padX + i * col;
           const mid = y(t);
-          const glowOpacity = 0.55;
-          const radius = 34;
 
           return (
             <g
@@ -63,6 +77,7 @@ export default function TempGraph({
               onMouseLeave={() => setActive(null)}
               style={{ cursor: "pointer" }}
             >
+              {/* guide */}
               <line
                 x1={x}
                 x2={x}
@@ -71,18 +86,31 @@ export default function TempGraph({
                 stroke="rgba(255,255,255,0.06)"
               />
 
+              {/* glow */}
               <circle
                 cx={x}
                 cy={mid}
-                r={radius}
-                fill={`rgba(255,200,110,${glowOpacity})`}
+                r={34}
+                fill="rgba(255,200,110,0.55)"
                 filter={`url(#${glowId})`}
                 opacity={active === i ? 0.95 : 0.75}
               />
 
-              <circle cx={x} cy={mid} r={active === i ? 11 : 9} fill="rgba(255,205,120,0.55)" />
+              {/* dot */}
+              <circle
+                cx={x}
+                cy={mid}
+                r={active === i ? 11 : 9}
+                fill="rgba(255,205,120,0.55)"
+              />
 
-              <circle cx={x} cy={mid} r={active === i ? 4.5 : 3.6} fill="rgba(255,235,200,0.9)" />
+              {/* core */}
+              <circle
+                cx={x}
+                cy={mid}
+                r={active === i ? 4.5 : 3.6}
+                fill="rgba(255,235,200,0.9)"
+              />
             </g>
           );
         })}
