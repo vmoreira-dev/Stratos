@@ -1,56 +1,47 @@
 "use client";
 
-export default function TempGraph() {
-  const temps = [66, 68, 70, 73, 73, 71];
+import { useState, useId } from "react";
+
+export default function TempGraph({
+  data,
+  loading,
+}: {
+  data?: any;
+  loading?: boolean;
+}) {
+  if (loading || !data?.daily?.length) return <div className="w-full h-44" />;
+
+  const mids = data.daily.slice(0, 5).map((d: any) => Math.round(d.temp.day));
+
+  const [active, setActive] = useState<number | null>(null);
 
   const width = 1000;
-  const height = 140;
+  const height = 160;
 
   const chartTop = 20;
-  const chartBottom = 110;
+  const chartBottom = 120;
   const chartHeight = chartBottom - chartTop;
 
-  let min = Math.min(...temps) - 2;
-  let max = Math.max(...temps) + 2;
+  const min = Math.min(...mids) - 3;
+  const max = Math.max(...mids) + 3;
 
-  const step = width / (temps.length - 1);
+  const padX = 100;
+  const col = (width - padX * 2) / (mids.length - 1);
 
-  const points = temps.map((t, i) => {
-    const n = (t - min) / (max - min);
-    const eased = Math.pow(n, 1.2); // tasteful exaggeration
-    const y = chartBottom - eased * chartHeight;
-    const x = i * step;
-    return { x, y };
-  });
+  const y = (v: number) =>
+    chartBottom - ((v - min) / (max - min)) * chartHeight;
 
-  const path = points
-    .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
-    .join(" ");
+  const glowId = useId();
 
   return (
-    <div className="relative w-full h-32">
-      {/* horizon glow */}
-      <div className="pointer-events-none absolute inset-x-20 bottom-9 h-px bg-gradient-to-r from-transparent via-amber-300/55 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-amber-400/22 to-transparent blur-xl" />
-
-      <svg
-        viewBox={`0 0 ${width} ${height}`}
-        className="absolute inset-x-0 bottom-6 h-[120px] w-full"
-        fill="none"
-      >
+    <div className="relative w-full h-44">
+      <svg viewBox={`0 0 ${width} ${height}`} className="absolute inset-0 w-full h-full" fill="none">
         <defs>
-          <linearGradient id="curve" x1="0" y1="0" x2={width} y2="0">
-            <stop offset="0%" stopColor="rgba(253,230,138,0.45)" />
-            <stop offset="55%" stopColor="rgba(251,191,36,0.75)" />
-            <stop offset="100%" stopColor="rgba(251,191,36,1)" />
-          </linearGradient>
-
-          <filter id="softGlow">
-            <feGaussianBlur stdDeviation="7" />
+          <filter id={glowId} filterUnits="userSpaceOnUse" x="-500" y="-500" width="2000" height="2000">
+            <feGaussianBlur stdDeviation="28" />
           </filter>
         </defs>
 
-        {/* faint baseline */}
         <line
           x1="0"
           x2={width}
@@ -59,64 +50,42 @@ export default function TempGraph() {
           stroke="rgba(255,255,255,0.08)"
         />
 
-        {/* connector line */}
-        <path
-          d={path}
-          stroke="url(#curve)"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          opacity="0.75"
-          style={{ transition: "d 0.65s ease-out" }}
-        />
+        {mids.map((t, i) => {
+          const x = padX + i * col;
+          const mid = y(t);
+          const glowOpacity = 0.55;
+          const radius = 34;
 
-        {/* glowing dots */}
-        {points.map((p, i) => (
-          <g key={i}>
-            <circle
-              cx={p.x}
-              cy={p.y}
-              r="8"
-              fill="rgba(251,191,36,0.22)"
-              filter="url(#softGlow)"
-              style={{ transition: "all 0.45s ease-out" }}
-            />
-            <circle
-              cx={p.x}
-              cy={p.y}
-              r="3.8"
-              fill="rgb(251,191,36)"
-              style={{ transition: "all 0.45s ease-out" }}
-            />
-          </g>
-        ))}
+          return (
+            <g
+              key={i}
+              onMouseEnter={() => setActive(i)}
+              onMouseLeave={() => setActive(null)}
+              style={{ cursor: "pointer" }}
+            >
+              <line
+                x1={x}
+                x2={x}
+                y1={chartTop}
+                y2={chartBottom}
+                stroke="rgba(255,255,255,0.06)"
+              />
 
-        {/* elegant temperature bars (shortened) */}
-        {points.map((p, i) => (
-          <line
-            key={`bar-${i}`}
-            x1={p.x}
-            x2={p.x}
-            y1={chartBottom - 14}
-            y2={p.y}
-            stroke="rgba(251,191,36,0.45)"
-            strokeWidth="2"
-            strokeLinecap="round"
-            style={{ transition: "all 0.45s ease-out" }}
-          />
-        ))}
+              <circle
+                cx={x}
+                cy={mid}
+                r={radius}
+                fill={`rgba(255,200,110,${glowOpacity})`}
+                filter={`url(#${glowId})`}
+                opacity={active === i ? 0.95 : 0.75}
+              />
 
-        {/* ticks (subtle) */}
-        {points.slice(1, -1).map((p, i) => (
-          <line
-            key={`tick-${i}`}
-            x1={p.x}
-            y1={height}
-            x2={p.x}
-            y2={chartBottom - 10}
-            stroke="rgba(255,255,255,0.15)"
-            strokeWidth="1"
-          />
-        ))}
+              <circle cx={x} cy={mid} r={active === i ? 11 : 9} fill="rgba(255,205,120,0.55)" />
+
+              <circle cx={x} cy={mid} r={active === i ? 4.5 : 3.6} fill="rgba(255,235,200,0.9)" />
+            </g>
+          );
+        })}
       </svg>
     </div>
   );

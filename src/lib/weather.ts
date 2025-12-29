@@ -1,13 +1,13 @@
-export function normalize(values: number[]) {
-  const min = Math.min(...values);
-  const max = Math.max(...values);
+// lib/weather.ts
 
-  return values.map(v => {
-    if (max === min) return 0.5; // flat forecast safety
-    return (v - min) / (max - min);
-  });
-}
+const API_KEY = process.env.OPENWEATHER_KEY;
 
-export function exaggerate(norm: number[], floor = 0.25, range = 0.5) {
-  return norm.map(v => floor + v * range);
+export async function getWeather(lat: number, lon: number) {
+  const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=imperial`;
+
+  const res = await fetch(url, { cache: "no-store" });
+
+  if (!res.ok) throw new Error("Weather fetch failed");
+
+  return res.json();
 }

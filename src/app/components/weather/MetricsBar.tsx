@@ -1,40 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+export default function MetricsBar({
+  data,
+  loading,
+}: {
+  data?: any;
+  loading?: boolean;
+}) {
+  if (loading || !data) return null;
 
-type Metrics = {
-  wind: number;
-  humidity: number;
-  precip: number;
-};
-
-export default function MetricsBar() {
-  const [metrics, setMetrics] = useState<Metrics | null>(null);
-
-  useEffect(() => {
-    fetch("/api")
-      .then(res => res.json())
-      .then(data => {
-        // use the first forecast block (closest to now)
-        const now = data.list[0];
-
-        setMetrics({
-          wind: Math.round(now.wind.speed),            // mph (already imperial)
-          humidity: Math.round(now.main.humidity),     // %
-          precip: Math.round((now.pop ?? 0) * 100),    // %
-        });
-      })
-      .catch(() => {
-        // fail silently — UI should never explode
-        setMetrics({
-          wind: 0,
-          humidity: 0,
-          precip: 0,
-        });
-      });
-  }, []);
-
-  if (!metrics) return null;
+  const wind = Math.round(data.current?.wind_speed ?? 0);
+  const humidity = Math.round(data.current?.humidity ?? 0);
+  const precip = Math.round((data.daily?.[0]?.pop ?? 0) * 100);
 
   return (
     <div
@@ -52,25 +29,17 @@ export default function MetricsBar() {
         backdrop-blur-md
       "
     >
-      <Metric label="Wind" value={`${metrics.wind} mph`} />
-      <Metric label="Humidity" value={`${metrics.humidity}%`} />
-      <Metric label="Precip" value={`${metrics.precip}%`} />
+      <Metric label="Wind" value={`${wind} mph`} />
+      <Metric label="Humidity" value={`${humidity}%`} />
+      <Metric label="Precip" value={`${precip}%`} />
     </div>
   );
 }
 
-function Metric({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
+function Metric({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="text-sm tracking-wide text-white/60">
-        {label}
-      </span>
+      <span className="text-sm tracking-wide text-white/60">{label}</span>
       <span className="text-lg font-light tracking-tight text-white/85">
         {value}
       </span>
