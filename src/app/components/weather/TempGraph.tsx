@@ -73,7 +73,7 @@ export default function TempGraph({ data, loading }: TempGraphProps) {
           stroke="rgba(255,255,255,0.08)"
         />
 
-        {mids.map((t, i) => {
+        {mids.map((t: number, i: number) => {
           const x = padX + i * col;
           const mid = y(t);
           const heat = (t - min) / (max - min || 1);
