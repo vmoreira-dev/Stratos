@@ -7,15 +7,19 @@ import ForecastRow from "./ForecastRow";
 import MetricsBar from "./MetricsBar";
 
 const cities = {
+  Boston: { lat: 42.3601, lon: -71.0589 },
   "New York": { lat: 40.7128, lon: -74.006 },
   "Los Angeles": { lat: 34.0522, lon: -118.2437 },
-  "Boston": { lat: 42.3601, lon: -71.0589 },
 };
 
+const DEFAULT_CITY = "Boston" as const;
 
 export default function WeatherCard() {
   const [mounted, setMounted] = useState(false);
-  const [city, setCity] = useState("New York");
+
+  // 👇 Boston is the *true* default
+  const [city, setCity] = useState<string>(DEFAULT_CITY);
+
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -37,25 +41,25 @@ export default function WeatherCard() {
       .finally(() => setLoading(false));
   }, [city, mounted]);
 
-  // 👇 THIS prevents hydration mismatch
+  // prevent hydration mismatch
   if (!mounted) return null;
 
   return (
-   <section
-        className="
-          group
-          relative
-          w-full
-          max-w-[1100px]
-          min-h-[460px]
-          rounded-3xl
-      -   overflow-hidden
-          backdrop-blur-2xl
-          ring-1 ring-white/15
-          shadow-[0_40px_120px_rgba(0,0,0,0.75)]
-        "
-      >
-
+    <section
+      key={city} // 👈 forces a clean remount if default ever changes
+      className="
+        group
+        relative
+        w-full
+        max-w-[1100px]
+        min-h-[460px]
+        rounded-3xl
+        overflow-hidden
+        backdrop-blur-2xl
+        ring-1 ring-white/15
+        shadow-[0_40px_120px_rgba(0,0,0,0.75)]
+      "
+    >
       {/* glass washes */}
       <div className="pointer-events-none absolute inset-0 z-0">
         <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-white/12 to-transparent" />

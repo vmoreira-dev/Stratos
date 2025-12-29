@@ -40,27 +40,25 @@ export async function GET(req: Request) {
       .toISOString()
       .slice(0, 10);
 
-    // bucket entries by date, choose the one closest to 12:00 local
+    // bucket entries by date
     const buckets: Record<string, any[]> = {};
 
     for (const item of forecast.list) {
       const local = new Date(item.dt * 1000 + tzOffsetMs);
       const key = local.toISOString().slice(0, 10);
-
       if (!buckets[key]) buckets[key] = [];
       buckets[key].push(item);
     }
 
     const days = Object.keys(buckets)
-      .filter((k) => k >= todayKey) // only today+
-      .slice(0, 5) // limit before mapping
+      .filter((k) => k >= todayKey)
+      .slice(0, 5)
       .map((k) => {
         const items = buckets[k];
 
-        // 12:00 reference time
+        // choose the entry closest to 12:00 local
         const noon = new Date(k + "T12:00:00.000Z").getTime();
 
-        // choose the item closest to noon local
         const best = items.reduce((a, b) =>
           Math.abs(a.dt * 1000 - noon) < Math.abs(b.dt * 1000 - noon) ? a : b
         );
@@ -71,6 +69,9 @@ export async function GET(req: Request) {
           dt: best.dt,
           day: local.toLocaleDateString("en-US", { weekday: "short" }),
           temp: Math.round(best.main.temp),
+
+          // 👇 REAL PRECIP (% chance) — from pop
+          precip: Math.round((best.pop ?? 0) * 100),
         };
       });
 

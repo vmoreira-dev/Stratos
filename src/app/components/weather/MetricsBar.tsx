@@ -9,7 +9,12 @@ export default function MetricsBar({
 }) {
   const wind = loading || !data ? "--" : data.current.wind;
   const humidity = loading || !data ? "--" : data.current.humidity;
-  const precip = "--"; // forecast API doesn't give exact %
+
+  // 👇 NEW — pull precip from the FIRST forecast day
+  const precip =
+    loading || !data || data.days?.[0]?.precip === undefined
+      ? "--"
+      : data.days[0].precip;
 
   return (
     <div
