@@ -10,25 +10,24 @@ const cities = {
   Boston: { lat: 42.3601, lon: -71.0589 },
   "New York": { lat: 40.7128, lon: -74.006 },
   "Los Angeles": { lat: 34.0522, lon: -118.2437 },
-};
+} as const;
 
-const DEFAULT_CITY = "Boston" as const;
+// 👉 this becomes: "Boston" | "New York" | "Los Angeles"
+type CityName = keyof typeof cities;
+
+const DEFAULT_CITY: CityName = "Boston";
 
 export default function WeatherCard() {
   const [mounted, setMounted] = useState(false);
 
-  // 👇 Boston is the *true* default
-  const [city, setCity] = useState<string>(DEFAULT_CITY);
+  // 👇 city is NOW correctly typed
+  const [city, setCity] = useState<CityName>(DEFAULT_CITY);
 
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // ensure server + first client render match
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => setMounted(true), []);
 
-  // fetch after mount + city change
   useEffect(() => {
     if (!mounted) return;
 
@@ -41,12 +40,11 @@ export default function WeatherCard() {
       .finally(() => setLoading(false));
   }, [city, mounted]);
 
-  // prevent hydration mismatch
   if (!mounted) return null;
 
   return (
     <section
-      key={city} // 👈 forces a clean remount if default ever changes
+      key={city}
       className="
         group
         relative
@@ -67,7 +65,7 @@ export default function WeatherCard() {
         <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-amber-500/30 to-transparent" />
       </div>
 
-      {/* watermark + dropdown */}
+      {/* city + dropdown */}
       <div className="absolute left-14 top-10 z-20 flex items-center gap-4">
         <span className="font-sans text-lg tracking-[0.22em] text-white/65 uppercase">
           {city}
@@ -75,7 +73,7 @@ export default function WeatherCard() {
 
         <select
           value={city}
-          onChange={(e) => setCity(e.target.value)}
+          onChange={(e) => setCity(e.target.value as CityName)}
           className="
             bg-black/30
             text-sm
