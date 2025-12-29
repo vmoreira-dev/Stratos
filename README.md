@@ -1,6 +1,8 @@
 # Stratos
 
-[![Stratos](./public/assets/stratos.webp)](./public/assets/stratos.webp)
+![Stratos](public/assets/stratos.webp)
+
+
 
 ---
 
