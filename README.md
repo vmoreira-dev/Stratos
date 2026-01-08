@@ -1,6 +1,6 @@
 # Stratos
 
-![Stratos](public/assets/stratos.webp)
+![Stratos](public/assets/stratos_5_4.webp)
 
 
 
