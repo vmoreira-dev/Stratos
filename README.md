@@ -16,9 +16,10 @@ Stratos is a lightweight weather interface focused on clarity, scale, and motion
 
 ## Design
 
-- Readability over density
-- Glass surfaces and layered depth
-- Designed to be glanced at, not studied
+- Warm-to-cool gradient background with a soft glow
+- A single glass panel floats above the background
+- Large temperature reading with minimal supporting details
+
 
 
 ---
