@@ -8,26 +8,26 @@
 
 ## Overview
 
-Stratos is a lightweight weather interface focused on clarity scale and motion.  
-It presents current conditions and short-range forecasts through a glass-based UI designed for quick reading and ambient awareness.
+Stratos is a lightweight weather interface focused on clarity, scale, and motion.
 
-[View](https://stratos.vmoreira.dev)
+[Live Demo](https://stratos.vmoreira.dev)
 
 ---
 
-## Presentation
+## Design
 
-- Emphasis on readability over density  
-- Glass surfaces and layered depth  
-- Smooth transitions between states  
-- Information grouped by visual hierarchy  
-- Designed to be glanced at not studied  
+- Readability over density
+- Glass surfaces and layered depth
+- Designed to be glanced at, not studied
+
 
 ---
 
 ## Stack
 
-- Next.js  
-- TypeScript  
-- Tailwind CSS  
-- OpenWeather API  
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- OpenWeather API
+
