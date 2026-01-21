@@ -1,4 +1,14 @@
 import "./globals.css";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Stratos",
+  description: "Precision-built systems. No noise.",
+  applicationName: "Stratos",
+  icons: {
+    icon: "/favicon.ico",
+  },
+};
 
 export default function RootLayout({
   children,
@@ -12,13 +22,11 @@ export default function RootLayout({
         {/* === FULLSCREEN BACKGROUND === */}
         <div className="fixed inset-0 z-0">
           <img
-          src="/backgrounds/stratos-horizon.webp"
-          alt=""
-          className="w-full h-full object-cover"
-          draggable={false}
-        />
-
-
+            src="/backgrounds/stratos-horizon.webp"
+            alt=""
+            className="w-full h-full object-cover"
+            draggable={false}
+          />
         </div>
 
         {/* === APP CONTENT === */}
