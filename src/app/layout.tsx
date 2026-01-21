@@ -3,10 +3,10 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Stratos",
-  description: "Precision-built systems. No noise.",
+  description: "Precision-built systems",
   applicationName: "Stratos",
   icons: {
-    icon: "/favicon.svg",
+    icon: "/favicon-stratos",
   },
 };
 
