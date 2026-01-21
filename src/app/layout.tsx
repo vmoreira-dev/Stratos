@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "Precision-built systems. No noise.",
   applicationName: "Stratos",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/favicon.svg",
   },
 };
 
