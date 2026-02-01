@@ -2,15 +2,13 @@
 
 ![Stratos](public/assets/stratos_5_4.webp)
 
-
-
 ---
 
 ## Overview
 
 Stratos is a lightweight weather interface focused on clarity, scale, and motion.
 
-[Live Demo](https://stratos.vmoreira.dev)
+**[Live Demo](https://stratos.vmoreira.dev)**
 
 ---
 
